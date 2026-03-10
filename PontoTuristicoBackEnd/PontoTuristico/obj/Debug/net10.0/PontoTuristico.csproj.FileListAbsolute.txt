@@ -1,0 +1,8 @@
+D:\ProjetoEvertec\PontoTuristico\PontoTuristico\obj\Debug\net10.0\PontoTuristico.csproj.AssemblyReference.cache
+D:\ProjetoEvertec\PontoTuristico\PontoTuristico\obj\Debug\net10.0\rpswa.dswa.cache.json
+D:\ProjetoEvertec\PontoTuristico\PontoTuristico\obj\Debug\net10.0\PontoTuristico.GeneratedMSBuildEditorConfig.editorconfig
+D:\ProjetoEvertec\PontoTuristico\PontoTuristico\obj\Debug\net10.0\PontoTuristico.AssemblyInfoInputs.cache
+D:\ProjetoEvertec\PontoTuristico\PontoTuristico\obj\Debug\net10.0\PontoTuristico.AssemblyInfo.cs
+D:\ProjetoEvertec\PontoTuristico\PontoTuristico\obj\Debug\net10.0\PontoTuristico.csproj.CoreCompileInputs.cache
+D:\ProjetoEvertec\PontoTuristico\PontoTuristico\obj\Debug\net10.0\PontoTuristico.MvcApplicationPartsAssemblyInfo.cs
+D:\ProjetoEvertec\PontoTuristico\PontoTuristico\obj\Debug\net10.0\PontoTuristico.MvcApplicationPartsAssemblyInfo.cache
