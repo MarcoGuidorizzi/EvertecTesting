@@ -1,0 +1,47 @@
+﻿using Microsoft.EntityFrameworkCore;
+using PontoTuristicoApp.Data;
+using PontoTuristicoApp.Repositories;
+using PontoTuristicoApp.Services;
+
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+//configuração padrão para injeção de dependência, ou seja,
+//para que o meu controller consiga receber as dependências do serviço e do repositório,
+//sem precisar criar manualmente as instâncias dessas classes, o que é uma boa prática de desenvolvimento,
+//pois desacopla as classes e facilita a manutenção do código.
+builder.Services.AddControllers();
+// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddOpenApi();
+
+//Configuração do banco de dados, utilizando o Entity Framework Core, e a string de conexão que está no appsettings.json,
+//para que o meu contexto do banco de dados consiga se conectar ao banco de dados SQL Server.
+var connectionString = builder.Configuration.GetConnectionString("AppDbConnectionString");
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+
+//Registro do Repository
+// "Sempre que alguém pedir IPontoTuristicoRepository, entregue a ImplementationPontoTuristicoRepository"
+builder.Services.AddScoped<IPontoTuristicoRepository, ImplementationPontoTuristicoRepository>();
+
+//Registro da Service
+// "Sempre que alguém pedir InterfacePontoTuristicoService, entregue a ImplementationPontoTuristicoService"
+builder.Services.AddScoped<InterfacePontoTuristicoService, ImplementationPontoTuristicoService>();
+
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+}
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
