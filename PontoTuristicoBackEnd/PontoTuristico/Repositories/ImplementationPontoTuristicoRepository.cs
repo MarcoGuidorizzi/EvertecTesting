@@ -18,10 +18,6 @@ namespace PontoTuristicoApp.Repositories
         {
             return await _context.PontosTuristicos.ToListAsync();
         }
-        // utilizei o ? ali após o Task <PontoTuristicoModel?> para indicar que o retorno pode ser nulo, ou seja,
-        // caso o id não exista no banco de dados, ele pode retornar null.
-        // Até porque minha Controller já está preparada para lidar com esse cenário, retornando um NotFound()
-        // caso o resultado seja null.
         public async Task<PontoTuristicoModel?> GetByIdAsync(int id)
         {
             return await _context.PontosTuristicos.FindAsync(id);
@@ -36,18 +32,16 @@ namespace PontoTuristicoApp.Repositories
 
         public async Task<PontoTuristicoModel> UpdateAsync(int id, PontoTuristicoModel pontoTuristico)
         {
-            // Tentando buscar o registro no banco de dados
             var existingPontoTuristico = await _context.PontosTuristicos.FindAsync(id);
 
             if (existingPontoTuristico == null)
             {
               throw new Exception($"Ponto Turístico com ID {id} não foi encontrado no sistema.");
             }
-            //Se chegar até aqui significa que o registro foi encontrado, então podemos atualizar os campos
             existingPontoTuristico.Nome = pontoTuristico.Nome;
             existingPontoTuristico.Descricao = pontoTuristico.Descricao;
             existingPontoTuristico.Localizacao = pontoTuristico.Localizacao;
-            //Salva as alterações de fato no banco de dados
+ 
             await _context.SaveChangesAsync();
             return existingPontoTuristico;
         }
