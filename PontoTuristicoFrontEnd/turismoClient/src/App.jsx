@@ -11,7 +11,6 @@ function App() {
     const [modalOpen, setModalOpen] = useState(false);
     const [editData, setEditData] = useState(null);
 
-    //GET - listar pontos
     useEffect(() => {
         fetch(API_URL)
             .then(response => response.json())
@@ -32,7 +31,6 @@ function App() {
             });
             setPontos(pontos.map(p => p.id === editData.id ? { ...formData, id: editData.id } : p));
         } else {
-            //POST
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
@@ -45,7 +43,6 @@ function App() {
         setEditData(null);
         };
 
-    //DELETE
     const handleDelete = async (id) => {
         await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
         setPontos(pontos.filter(p => p.id !== id));
