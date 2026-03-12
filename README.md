@@ -9,6 +9,7 @@ Este projeto consiste em um sistema de gerenciamento de Pontos Turísticos, real
 O backend foi desenvolvido utilizando a arquitetura em camadas, separando as responsabilidades da aplicação para melhorar a organização, manutenção e escalabilidade.
 
 **A estrutura do projeto segue o seguinte fluxo:**
+
 Controller > Service > Repository > Database
 
 **Demonstração do Sistema**
