@@ -4,10 +4,8 @@
 
 namespace PontoTuristicoApp.Migrations
 {
-    /// <inheritdoc />
     public partial class Inicial : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -27,8 +25,6 @@ namespace PontoTuristicoApp.Migrations
                     table.PrimaryKey("PK_PontosTuristicos", x => x.Id);
                 });
         }
-
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
