@@ -9,13 +9,11 @@ namespace PontoTuristicoApp.Data
     {
         public AppDbContext CreateDbContext(string[] args)
         {
-            //Carrega o appsettings.json para obter a string de conexão
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            //Lê a connection string
             var connectionString = configuration.GetConnectionString("AppDbConnectionString");
 
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
