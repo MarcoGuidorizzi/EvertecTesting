@@ -18,11 +18,6 @@ namespace PontoTuristicoApp.Controllers
         [HttpPost]
         public async Task<ActionResult<PontoTuristicoModel>> AddPontoTuristico([FromBody] PontoTuristicoModel pontoTuristico)
         {
-            //se meu model state não for válido, ou seja, se os dados que eu recebi não forem válidos,
-            //eu vou retornar um bad request, com o meu model state, para o cliente saber o que deu errado a validação dos dados recebidos.
-            //no caso a model state me assegura que a validação que coloquei na model (required) por exemplo, está sendo respeitada,
-            //ou seja, se eu recebi um ponto turistico sem nome, a model state vai me dizer que o nome é obrigatório,
-            //e eu vou retornar um bad request para o cliente, informando que o nome é obrigatório.
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -38,9 +33,6 @@ namespace PontoTuristicoApp.Controllers
         }
 
         [HttpGet]
-        //Estou usando async e await pois o acesso ao banco não é instantaneo, quando for chamar essa requisicao ao banco, preciso esperar ele retornar, para o meu codigo continuar executando.
-        //vou esperar o banco retornar uma lista, enquanto nao retorna, o meu codigo nao continua. Pois se eu não colocar o await ele vai esperar o retorno automaticamente, mas o banco sempre tem um delay
-        //entao preciso travar o codigo, esperando a resposta chegar, para depois continuar a execução do meu codigo. Se eu não fizer isso, o meu codigo vai continuar executando, e quando chegar na linha de return, o banco ainda não vai ter retornado a lista, e ai vai dar um erro.
         public async Task<ActionResult<IEnumerable<PontoTuristicoModel>>> GetPontosTuristicos()
         {
             var pontosTuristicos = await _context.PontosTuristicos.ToListAsync();
