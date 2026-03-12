@@ -32,6 +32,3 @@ namespace PontoTuristicoApp.Services
         }
     }
 }
-// realizei os métodos com public async e await para que os mesmos estejam preaparados para processamento asíncrono, ou seja,
-// para que o código fique mais performático no sentido de aguentar mais acessos simultaneos,
-// já que as operações de banco de dados podem ser demoradas.
