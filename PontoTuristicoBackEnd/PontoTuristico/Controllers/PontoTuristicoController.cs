@@ -1,91 +1,78 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using PontoTuristicoApp.Models;
+using PontoTuristicoApp.Services;
 
 namespace PontoTuristicoApp.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-
     public class PontoTuristicoController : ControllerBase
     {
-        private readonly Data.AppDbContext _context;
-
-        public PontoTuristicoController(Data.AppDbContext context)
+        private readonly InterfacePontoTuristicoService _service;
+        public PontoTuristicoController(InterfacePontoTuristicoService service)
         {
-            _context = context;
+            _service = service;
         }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<PontoTuristicoModel>>> Get()
+        {
+            var pontosTuristicos = await _service.GetAllAsync();
+            return Ok(pontosTuristicos);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PontoTuristicoModel>> Get(int id)
+        {
+            var pontosTuristicos = await _service.GetByIdAsync(id);
+            if (pontosTuristicos == null)
+            {
+                return NotFound("Ponto Turistico não encontrado!");
+            }
+            return Ok(pontosTuristicos);
+        }
+
         [HttpPost]
-        public async Task<ActionResult<PontoTuristicoModel>> AddPontoTuristico([FromBody] PontoTuristicoModel pontoTuristico)
+        public async Task<ActionResult> Create(PontoTuristicoModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new
+                {
+                    message = "Dados inválidos",
+                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                });
+            }
+
+            await _service.AddAsync(model);
+            return CreatedAtAction(nameof(Get), new { id = model.Id }, model);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Update(int id, PontoTuristicoModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            _context.PontosTuristicos.Add(pontoTuristico);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction(
-                nameof(GetPontosTuristicos), 
-                new { id = pontoTuristico.Id },
-                pontoTuristico
-            );
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PontoTuristicoModel>>> GetPontosTuristicos()
-        {
-            var pontosTuristicos = await _context.PontosTuristicos.ToListAsync();
-            return Ok(pontosTuristicos);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<PontoTuristicoModel>> GetPontosTuristicos(int id)
-        {
-            var pontosTuristicos = await _context.PontosTuristicos.FindAsync(id);
-
-            if (pontosTuristicos == null)
+            try
             {
-                return NotFound("Ponto Turistico não encontrado!");
+                await _service.UpdateAsync(id, model);
+                return NoContent();
             }
-
-            return Ok(pontosTuristicos);
-        }
-
-        [HttpPut("{id}")]
-
-        public async Task<ActionResult> UpdatePontosTuristicos(int id, [FromBody] PontoTuristicoModel pontoTuristico)
-        {
-            var pontosTuristicos = await _context.PontosTuristicos.FindAsync(id);
-
-            if (pontosTuristicos == null)
+            catch (Exception ex)
             {
-                return NotFound("Ponto Turistico não encontrado!");
+                return NotFound(ex.Message);
             }
-
-            _context.Entry(pontosTuristicos).CurrentValues.SetValues(pontoTuristico);
-
-            await _context.SaveChangesAsync();
-
-            return StatusCode(201, pontosTuristicos);
         }
 
         [HttpDelete("{id}")]
 
-        public async Task<ActionResult> DeletePontosTuristicos(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var pontosTuristicos = await _context.PontosTuristicos.FindAsync(id);
-
-            if (pontosTuristicos == null)
-            {
-                return NotFound("Ponto Turistico não encontrado!");
-            }
-
-            _context.PontosTuristicos.Remove(pontosTuristicos);
-
-            await _context.SaveChangesAsync();
-
-            return Ok("Ponto Turistico deletado com sucesso!");
+            await _service.DeleteAsync(id);
+            return NoContent();
         }
     }
 }
